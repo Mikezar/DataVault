@@ -7,13 +7,13 @@ namespace DataVault.Storage.Core.Cache
 {
    internal class Cache : ICache
     {
-        private readonly ObjectCache VaultCache;
+        private readonly VaultCache VaultCache;
         private readonly CacheItemPolicy policy;
         private IDictionary<string, bool> Actuality;
 
         public Cache()
         {
-            VaultCache = MemoryCache.Default;
+            VaultCache = new VaultCache();
             policy = new CacheItemPolicy()
             {
                 Priority = CacheItemPriority.Default
@@ -25,14 +25,15 @@ namespace DataVault.Storage.Core.Cache
         {
            var type = typeof(TEntity).Name;
 
-           if(VaultCache.Contains(type))
+            if (VaultCache[VaultCache.CombineRegion(type, region)] != null)
+            {
                 return (IEnumerable<TEntity>)VaultCache.Get(type, region);
+            }
 
             return null;
         }
 
-        public IDictionary<string, IEnumerable<object>> GetAll() => 
-            VaultCache.ToDictionary(x => x.Key, x => x.Value as IEnumerable<object>);
+        public IDictionary<string, IEnumerable<object>> GetAll() => VaultCache.ToDictionary(x => x.Key, x => x.Value as IEnumerable<object>);
 
         public void Set<TEntity>(IEnumerable<TEntity> objs, string region)
         {
@@ -45,7 +46,9 @@ namespace DataVault.Storage.Core.Cache
             var type = typeof(TEntity).Name;
 
             if (Actuality.ContainsKey(type))
+            {
                 return Actuality[type];
+            }
             else
             {
                 Actuality.Add(type, false);
@@ -67,13 +70,13 @@ namespace DataVault.Storage.Core.Cache
         {
             var keys = VaultCache.Select(x => x.Key).ToList();
 
-            keys.ForEach(a => VaultCache.Remove(a, region));
+            keys.ForEach(a => VaultCache.Remove(a));
             Actuality = new Dictionary<string, bool>();
         }
 
         public void Remove(string key, string region)
         {
-            VaultCache.Remove(key, region);
+            VaultCache.Remove(VaultCache.CombineRegion(key, region));
             Actuality.Remove(key);
         }
 

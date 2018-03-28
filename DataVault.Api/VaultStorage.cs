@@ -21,7 +21,6 @@ namespace DataVault.Api
             StorageFactory.GetStorage().Commit();
         }
 
-
         public static void Rollback()
         {
             StorageFactory.GetStorage().Clear();

@@ -52,6 +52,7 @@
     <Compile Include="Common\Check.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Context\VaultContext.cs" />
+    <Compile Include="Core\Cache\VaultCache.cs" />
     <Compile Include="Core\Exceptions\DataSetOperationException.cs" />
     <Compile Include="Core\Exceptions\InterpretationException.cs" />
     <Compile Include="Core\Exceptions\StorageException.cs" />
