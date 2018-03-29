@@ -1,5 +1,5 @@
 ﻿using DataVault.Storage.Common;
-using DataVault.Storage.Core.Sets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,6 +22,8 @@ namespace DataVault.Storage.Core.QueryBuilder
 
                var sciProperty =  typeof(TEntity).GetProperties()
                     .FirstOrDefault(x => x.GetCustomAttributes(true).FirstOrDefault(f => f as SCIAttribute != null) != null);
+
+                if (sciProperty == null) throw new InvalidOperationException("No SCI attribute was applied to potential key property");
 
                 foreach(var entity in entities)
                 {

@@ -8,7 +8,7 @@ using DataVault.Storage.Core.Views;
 
 namespace DataVault.Storage.Core.Storage
 {
-    public class Storage : IStorage 
+    internal class Storage : IStorage
     {
         private readonly Lazy<IQueryBuilder> _queryBuilder;
         private Lazy<ICache> Cache;
@@ -22,6 +22,12 @@ namespace DataVault.Storage.Core.Storage
             Cache = new Lazy<ICache>(() => new Cache.Cache());
             _provider = new Lazy<ITextFileProvider>(() => new VaultProvider());
             View = new Lazy<IView>(() => new View());
+        }
+
+        public Storage(ITextFileProvider provider, ICache cache) : this()
+        {
+            _provider = new Lazy<ITextFileProvider>(() => provider);
+            Cache  = new Lazy<ICache>(() => cache);
         }
 
         public bool TryGetFromCache<TEntity>(out IEnumerable<TEntity> entities)
@@ -44,15 +50,16 @@ namespace DataVault.Storage.Core.Storage
         {
             IEnumerable<TEntity> entities;
             if (TryGetFromCache(out entities))
+            {
                 return entities;
+            }
 
             try
             {
                 var result =  _provider.Value.Execute<TEntity>(
                     _queryBuilder.Value.CreateQuery<TEntity>(QueryType.Select, null)).Result;
 
-                if (result.Success == false)
-                    throw new StorageException(result.Exception.Message);
+                if (result.Success == false) throw new StorageException(result.Exception.Message);
 
                 Cache.Value.Set(result.Result, region);
                 View.Value.Bind(result.Result);
@@ -61,18 +68,25 @@ namespace DataVault.Storage.Core.Storage
             }
             catch(StorageException e)
             {
-                throw;
+                throw new VaultTransactionException(e);
             }    
         }
 
         public void ManipulateData<TEntity>(QueryType type, IEnumerable<TEntity> entities) where TEntity : class
         {
-            var result = _provider.Value.Execute<TEntity>(
-                _queryBuilder.Value.CreateQuery(type, entities)
-            ).Result;
+            try
+            {
+                var result = _provider.Value.Execute<TEntity>(_queryBuilder.Value.CreateQuery(type, entities)).Result;
 
-            if (result.Success == false)
-                throw new StorageException(result.Exception.Message);
+                if (result.Success == false)
+                {
+                    throw new StorageException(result.Exception.Message);
+                }
+            }
+            catch(StorageException e)
+            {
+                throw new StorageException("An error occured on executing write operation in vault storage", e);
+            }
         }
 
         public void Commit()

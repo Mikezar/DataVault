@@ -77,8 +77,11 @@
   <ItemGroup>
     <Compile Include="UnitTests\CacheTest.cs" />
     <Compile Include="UnitTests\ContextTest.cs" />
+    <Compile Include="UnitTests\QueryBuilderTest.cs" />
     <Compile Include="UnitTests\SetTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\StorageTest.cs" />
+    <Compile Include="UnitTests\ViewTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataVault.Storage\DataVault.Storage.csproj">
