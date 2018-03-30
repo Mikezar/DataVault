@@ -60,6 +60,7 @@
     <Compile Include="Core\Intepreter\IIntepreter.cs" />
     <Compile Include="Core\Intepreter\IntepretedData.cs" />
     <Compile Include="Core\Intepreter\VaultInterpreter.cs" />
+    <Compile Include="Core\MetaData\IMetaHandler.cs" />
     <Compile Include="Core\MetaData\MetadaHandler.cs" />
     <Compile Include="Core\MetaData\Metadata.cs" />
     <Compile Include="Core\MetaData\MetaList.cs" />

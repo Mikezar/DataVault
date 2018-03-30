@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/DataVault.Tests/VaultData/DataVault.Tests.UnitTests_meta.txt
+/DataVault.Tests/VaultData/TestEntity.txt
+/DataVault.Tests/VaultData/TestEntity.txt.restored

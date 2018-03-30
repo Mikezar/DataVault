@@ -77,6 +77,8 @@
   <ItemGroup>
     <Compile Include="UnitTests\CacheTest.cs" />
     <Compile Include="UnitTests\ContextTest.cs" />
+    <Compile Include="UnitTests\InputOutputTest.cs" />
+    <Compile Include="UnitTests\MetaHandlerTest.cs" />
     <Compile Include="UnitTests\QueryBuilderTest.cs" />
     <Compile Include="UnitTests\SetTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

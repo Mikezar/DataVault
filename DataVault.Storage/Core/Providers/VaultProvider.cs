@@ -7,7 +7,6 @@ using System.Collections.Concurrent;
 using DataVault.Storage.IO;
 using DataVault.Storage.Core.Exceptions;
 using DataVault.Storage.Core.Intepreter;
-using DataVault.Storage.Core.Cache;
 
 namespace DataVault.Storage.Core.Providers
 {
@@ -22,7 +21,7 @@ namespace DataVault.Storage.Core.Providers
         {
             try
             {
-                string filePath = IOHelper.CreateIfNotExists(source, false);
+                string filePath = IOHelper.CreateFileIfNotExists(source, false);
 
                 var rawData = await _fileReader.Value.ReadAsync(filePath);
 
@@ -49,23 +48,7 @@ namespace DataVault.Storage.Core.Providers
             }
         }
 
-        public VaultProvider()
-        {
-            _fileReader = new Lazy<IFileReader>(() => new FileReader());
-            _fileWriter = new Lazy<IFileWriter>(() => new FileWriter());
-            _intepreter = new Lazy<IIntepreter>(() => new VaultInterpreter());
-            _queries = new ConcurrentQueue<IntepretedData>();
-        }
-
-        public VaultProvider(IFileReader reader, IFileWriter writer)
-        {
-            _fileReader = new Lazy<IFileReader>(() => reader);
-            _fileWriter = new Lazy<IFileWriter>(() => writer);
-            _intepreter = new Lazy<IIntepreter>(() => new VaultInterpreter());
-            _queries = new ConcurrentQueue<IntepretedData>();
-        }
-
-        public async Task<IQueryResult<TEntity>> HandleQuery<TEntity>(IQuery query)
+        private async Task<IQueryResult<TEntity>> HandleQuery<TEntity>(IQuery query)
         {
             try
             {
@@ -84,7 +67,7 @@ namespace DataVault.Storage.Core.Providers
                     Exception = null
                 };
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new QueryResult<TEntity>()
                 {
@@ -94,6 +77,23 @@ namespace DataVault.Storage.Core.Providers
                 };
             }
         }
+        public VaultProvider()
+        {
+            _fileReader = new Lazy<IFileReader>(() => new FileReader());
+            _fileWriter = new Lazy<IFileWriter>(() => new FileWriter());
+            _intepreter = new Lazy<IIntepreter>(() => new VaultInterpreter());
+            _queries = new ConcurrentQueue<IntepretedData>();
+        }
+
+        public VaultProvider(IFileReader reader, IFileWriter writer)
+        {
+            _fileReader = new Lazy<IFileReader>(() => reader);
+            _fileWriter = new Lazy<IFileWriter>(() => writer);
+            _intepreter = new Lazy<IIntepreter>(() => new VaultInterpreter());
+            _queries = new ConcurrentQueue<IntepretedData>();
+        }
+
+    
 
         public async Task<IQueryResult<TEntity>> Execute<TEntity>(IQuery query)
         {
@@ -119,7 +119,7 @@ namespace DataVault.Storage.Core.Providers
                 {
                     for (int i = 0; i < queries.Length; i++)
                     {
-                        string filePath = IOHelper.CreateIfNotExists(queries[i].TypeName, true);
+                        string filePath = IOHelper.CreateFileIfNotExists(queries[i].TypeName, true);
                         files.Add(filePath);
                         await _fileWriter.Value.WriteAsync(filePath, queries[i].Data);
                     }
@@ -144,6 +144,7 @@ namespace DataVault.Storage.Core.Providers
 
         public void CleanUp(IList<string> filePathes)
         {
+            Clear();
             IOHelper.DeleteBackUps(filePathes.ToArray());
         }
 

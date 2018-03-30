@@ -18,7 +18,7 @@ namespace DataVault.Tests.UnitTests
         private Mock<ITextFileProvider> _provider;
         private Mock<ICache> _cache;
 
-        public class TEntity
+        private class TEntity
         {
             [SCI]
             public int Id { get; set; }

@@ -14,6 +14,7 @@ namespace DataVault.Tests.SetTest
     public class SetTest
     {
         private Mock<IObservationCollection<TestEntity>> _observable;
+
         public class TestEntity
         {
             public string Name { get; set; }
@@ -31,7 +32,7 @@ namespace DataVault.Tests.SetTest
         }
 
         [Test]
-        public void Add_Success()
+        public void DataSet_Add_Success()
         {
             IDataSet<TestEntity> tEntity = new DataSet<TestEntity>(_observable.Object);
 
@@ -44,7 +45,7 @@ namespace DataVault.Tests.SetTest
         }
 
         [Test]
-        public void Add_Fail()
+        public void DataSet_Add_Fail()
         {
             IDataSet<TestEntity> tEntity = new DataSet<TestEntity>(_observable.Object);
 
@@ -52,7 +53,7 @@ namespace DataVault.Tests.SetTest
         }
 
         [Test]
-        public async Task AddAsync_Success()
+        public async Task DataSet_AddAsync_Success()
         {
             IDataSet<TestEntity> tEntity = new DataSet<TestEntity>(_observable.Object);
 
@@ -65,7 +66,7 @@ namespace DataVault.Tests.SetTest
         }
 
         [Test]
-        public void Find_Success()
+        public void DataSet_Find_Success()
         {
             IDataSet<TestEntity> tEntity = new DataSet<TestEntity>(_observable.Object);
 
@@ -80,7 +81,7 @@ namespace DataVault.Tests.SetTest
         }
 
         [Test]
-        public void Find_Fail()
+        public void DataSet_Find_Fail()
         {
             IDataSet<TestEntity> tEntity = new DataSet<TestEntity>(_observable.Object);
 
@@ -90,7 +91,7 @@ namespace DataVault.Tests.SetTest
         }
 
         [Test]
-        public async Task AddRangeAsync_Success()
+        public async Task DataSet_AddRangeAsync_Success()
         {
             IDataSet<TestEntity> tEntity = new DataSet<TestEntity>(_observable.Object);
 
@@ -102,7 +103,7 @@ namespace DataVault.Tests.SetTest
 
 
         [Test]
-        public void Update_Success()
+        public void DataSet_Update_Success()
         {
             IDataSet<TestEntity> tEntity = new DataSet<TestEntity>(_observable.Object);
 
@@ -120,7 +121,7 @@ namespace DataVault.Tests.SetTest
         }
 
         [Test]
-        public async Task DeleteRangeAsync_Success()
+        public async Task DataSet_DeleteRangeAsync_Success()
         {
             IDataSet<TestEntity> tEntity = new DataSet<TestEntity>(_observable.Object);
 

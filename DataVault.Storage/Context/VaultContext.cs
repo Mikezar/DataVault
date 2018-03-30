@@ -47,11 +47,9 @@ namespace DataVault.Storage.Context
         {
             try
             {
-                var result = DataSets.Value.TryAdd(type.FullName,
-                   Activator.CreateInstance(typeof(DataSet<>).MakeGenericType(type)));
+                var result = DataSets.Value.TryAdd(type.FullName,Activator.CreateInstance(typeof(DataSet<>).MakeGenericType(type)));
 
-                if (result == false)
-                    throw new InvalidOperationException();
+                if (result == false) throw new InvalidOperationException();
             }
             catch (Exception e)
             {

@@ -7,13 +7,13 @@ namespace DataVault.Tests.UnitTests
     [TestFixture]
     public class ViewTest
     {
-        public class TestEntity
+        private class TestEntity
         {
             public string Description { get; set; }
         }
 
         [Test]
-        public void BindView_Success()
+        public void View_Bind_Success()
         {
             var list = new List<TestEntity>()
             {
@@ -31,7 +31,7 @@ namespace DataVault.Tests.UnitTests
         }
 
         [Test]
-        public void RestoreView_Success()
+        public void View_Restore_Success()
         {
             var list = new List<TestEntity>()
             {

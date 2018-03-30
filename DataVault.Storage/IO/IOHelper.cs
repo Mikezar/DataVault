@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Security.AccessControl;
 
 namespace DataVault.Storage.IO
 {
@@ -8,12 +7,12 @@ namespace DataVault.Storage.IO
     {
         private static object _lock = new object();
 
-        private static string GetAppPath()
+        public static string GetAppPath()
         {
             string appPath = AppDomain.CurrentDomain.BaseDirectory;
 
             if (appPath.ToLower().Contains("debug"))
-                appPath = Directory.GetParent(Directory.GetParent(appPath).ToString()).ToString();
+                appPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(appPath).ToString()).ToString()).ToString();
 
             return appPath;
         }
@@ -22,7 +21,7 @@ namespace DataVault.Storage.IO
         {
             string appPath = GetAppPath();
 
-            string directoryPath = Path.Combine(appPath, "\\VaultData");
+            string directoryPath = Path.Combine(appPath, "VaultData");
 
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
@@ -34,8 +33,7 @@ namespace DataVault.Storage.IO
         {
             string backUpPath = $"{filePath}.backup";
 
-            if (File.Exists(backUpPath))
-                return;
+            if (File.Exists(backUpPath)) return;
 
             File.Copy(filePath, backUpPath);
         }
@@ -48,14 +46,13 @@ namespace DataVault.Storage.IO
                 {
                     if (File.Exists($"{files[i]}.backup"))
                     {
-                        File.Replace($"{files[i]}.backup", files[i], $"{files[i]}.backup");
+                        File.Replace($"{files[i]}.backup", files[i], files[i] + ".restored");
                     }
                 }
             }
         }
 
-
-        public static string CreateIfNotExists(string type, bool createBackUp)
+        public static string CreateFileIfNotExists(string type, bool createBackUp)
         {
             try
             {
@@ -69,14 +66,13 @@ namespace DataVault.Storage.IO
                     using (FileStream stream = File.Create(filePath, 4096, FileOptions.Asynchronous)){ }
                 }
 
-                if (createBackUp)
-                    CreateBackUp(filePath, type);
+                if (createBackUp) CreateBackUp(filePath, type);
 
                 return filePath;
             }
             catch(Exception e)
             {
-                throw;
+                throw new IOException("Something went wrong on entity file creation", e);
             }
         }
 
@@ -86,8 +82,8 @@ namespace DataVault.Storage.IO
             {
                 for (int i = 0; i < files.Length; i++)
                 {
-                    if (File.Exists($"{files[i]}.backup"))
-                        File.Delete($"{files[i]}.backup");
+                    if (File.Exists($"{files[i]}.backup")) File.Delete($"{files[i]}.backup");
+                    if (File.Exists($"{files[i]}.restored")) File.Delete($"{files[i]}.restored");
                 }
             }
         }

@@ -5,26 +5,26 @@ using System;
 
 namespace DataVault.Tests.UnitTests
 {
-    public class TestEntity
-    {
-        public string Name { get; set; }
-    }
-
-    public class TestEntity2
-    {
-        public string Name { get; set; }
-    }
-
-    public class TestEntity3
-    {
-        public string Name { get; set; }
-    }
-
     [TestFixture]
     public class ContextTest
     {
+        private class TestEntity
+        {
+            public string Name { get; set; }
+        }
+
+        private class TestEntity2
+        {
+            public string Name { get; set; }
+        }
+
+        private class TestEntity3
+        {
+            public string Name { get; set; }
+        }
+
         [Test]
-        public void RegisterTest_Success()
+        public void Context_RegisterTest_Success()
         {
             IContext iContext = VaultContext.GetContext();
 
@@ -35,7 +35,7 @@ namespace DataVault.Tests.UnitTests
         }
 
         [Test]
-        public void RegisterTest_Fail()
+        public void Context_RegisterTest_Fail()
         {
             EntityContainer.RegisterEntity<TestEntity>();
             EntityContainer.RegisterEntity<TestEntity2>();
@@ -44,7 +44,7 @@ namespace DataVault.Tests.UnitTests
         }
 
         [Test]
-        public void ContextInit_Success()
+        public void Context_ContextInit_Success()
         {
             EntityContainer.RegisterEntity<TestEntity3>();
 
@@ -54,7 +54,7 @@ namespace DataVault.Tests.UnitTests
         }
 
         [Test]
-        public void GetContext_Success()
+        public void Context_GetContext_Success()
         {
             var iContext = VaultContext.GetContext();
             var iContext2 = VaultContext.GetContext();

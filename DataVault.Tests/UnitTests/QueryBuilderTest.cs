@@ -10,12 +10,12 @@ namespace DataVault.Tests.UnitTests
     [TestFixture]
     public class QueryBuilderTest
     {
-        public class TestEntity
+        private class TestEntity
         {
             public string Description { get; set; }
         }
 
-        public class TestEntity2
+        private class TestEntity2
         {
             [SCI]
             public int Id { get; set; }

@@ -10,13 +10,13 @@ namespace DataVault.Tests.UnitTests
     {
         private const string _region = "TestRegion";
 
-        public class TestEntity
+        private class TestEntity
         {
             public int Count { get; set; }
         }
 
         [Test]
-        public void TryGetCache_Success()
+        public void Cache_TryGet_Success()
         {
             ICache cache = new Cache();
 
@@ -32,7 +32,7 @@ namespace DataVault.Tests.UnitTests
         }
 
         [Test]
-        public void GetAllCache_Success()
+        public void Cache_GetAll_Success()
         {
             ICache cache = new Cache();
 
@@ -45,7 +45,7 @@ namespace DataVault.Tests.UnitTests
         }
 
         [Test]
-        public void GetSetActualityCache_Success()
+        public void Cache_GetSetActuality_Success()
         {
             ICache cache = new Cache();
 
@@ -59,7 +59,7 @@ namespace DataVault.Tests.UnitTests
         }
 
         [Test]
-        public void ResetCache_Success()
+        public void Cache_Reset_Success()
         {
             ICache cache = new Cache();
 
@@ -77,7 +77,7 @@ namespace DataVault.Tests.UnitTests
         }
 
         [Test]
-        public void RemoveCacheEntry_Success()
+        public void Cache_RemoveCacheEntry_Success()
         {
             ICache cache = new Cache();
 

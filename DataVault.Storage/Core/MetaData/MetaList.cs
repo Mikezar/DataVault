@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DataVault.Storage.Core.MetaData
 {
@@ -10,6 +11,8 @@ namespace DataVault.Storage.Core.MetaData
         }
 
         public int Version { get; set; }
+
+        public DateTimeOffset Created { get; set; }
 
         public List<Metadata> Metas { get; set; }
     }
